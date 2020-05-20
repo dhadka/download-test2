@@ -1,0 +1,21 @@
+name: Test
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  build:
+    name: Test
+    runs-on: windows-latest
+    
+    steps:
+    - name: "Download File"
+      shell: pwsh
+      run: |
+        $start_time = Get-Date
+        $wc = New-Object System.Net.WebClient
+        $wc.DownloadFile("${{ secrets.URL }}", "large.txt")
+        $elapsed_time = (Get-Date).Subtract($start_time).TotalMilliseconds
+        Write-Output "$elapsed_time"
+  
